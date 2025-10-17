@@ -280,6 +280,57 @@ Before moving to Phase 2, ensure:
 - **Report generation:** <5 seconds (for annual data)
 - **Data size:** Optimize for 1000-5000 transactions/year
 
+## Development Workflow
+
+### GitHub Issue-Based Development
+
+All development work follows this workflow:
+
+1. **Create Issue** - Use `gh issue create` to create a GitHub issue describing the task
+2. **Create Branch** - Create a feature branch from main: `git checkout -b feature/issue-XX-description`
+3. **Implementation** - Make changes and commit following commit message conventions
+4. **Push** - Push branch to remote: `git push -u origin branch-name`
+5. **Create PR** - Use `gh pr create` to create a pull request that references the issue
+6. **Review** - Code review by project owner
+7. **Merge** - Merge to main after approval
+
+### Branch Naming Convention
+
+- **Feature:** `feature/issue-XX-short-description`
+- **Bug Fix:** `fix/issue-XX-short-description`
+- **Documentation:** `docs/issue-XX-short-description`
+- **Refactoring:** `refactor/issue-XX-short-description`
+
+### Commit Message Convention
+
+Follow Conventional Commits format:
+
+```
+<type>: <description>
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+**Types:**
+- `feat:` - New feature
+- `fix:` - Bug fix
+- `refactor:` - Code refactoring
+- `test:` - Adding or updating tests
+- `docs:` - Documentation changes
+- `style:` - Code style changes (formatting, etc.)
+- `chore:` - Maintenance tasks
+
+### PR Creation
+
+When creating PRs:
+- Title should clearly describe the change
+- Body should include:
+  - Summary of changes (bullet points)
+  - Test plan/checklist
+  - Reference to issue: `Closes #XX`
+
 ## Translation Note
 
 - **Code and documentation:** English
