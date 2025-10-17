@@ -6,9 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **KKB (K's Kakeibo)** is a double-entry bookkeeping household budget application being developed as a replacement for GnuCash. The project aims to maintain GnuCash's strengths (local-first, double-entry accounting) while solving smartphone compatibility and Japanese input issues.
 
-**Development Stage:** Planning phase completed; implementation NOT YET STARTED.
+**Development Stage:** Task 0 (Project Setup) completed; implementation in progress.
 
 **Target Timeline:** 1-2 weeks for MVP (Phase 1)
+
+**Current Task:** Task 1 - Type definitions (`src/types/index.ts`)
 
 **Related Documents:**
 - `requirements.md` - Detailed requirements specification (in Japanese)
@@ -73,23 +75,15 @@ src/
 
 ## Development Commands
 
-### Initial Setup (NOT YET DONE)
-The project structure exists but no code has been implemented yet. To start development:
+### Initial Setup
+Setup is complete. The project includes:
+- ✅ Vite + React + TypeScript project structure
+- ✅ Dependencies installed (react-router-dom, sass, vite-plugin-pwa, vitest)
+- ✅ Directory structure created under `src/`
+- ✅ PWA configuration in `vite.config.ts`
+- ✅ TypeScript strict mode enabled
 
-```bash
-# Create the Vite project
-npm create vite@latest household-budget -- --template react-ts
-cd household-budget
-
-# Install dependencies
-npm install react-router-dom
-npm install -D sass vite-plugin-pwa vitest
-
-# Start development
-npm run dev
-```
-
-### Development (Once setup is complete)
+### Development
 ```bash
 npm run dev          # Start dev server (http://localhost:5173)
 ```
@@ -168,8 +162,8 @@ Data Layer → Business Logic → UI Layer → Integration
 
 ### Task Sequence (Phase 1 MVP)
 
-0. Project setup (Vite + React + TypeScript)
-1. Type definitions (`src/types/`)
+0. ✅ Project setup (Vite + React + TypeScript) - **COMPLETED**
+1. Type definitions (`src/types/`) - **NEXT**
 2. **DataStore implementation** (most critical - test thoroughly)
 3. React Context integration
 4. Routing and layout
@@ -362,9 +356,10 @@ If you're starting work on this project:
    - `task_breakdown.md` - Detailed task breakdown with implementation order (Japanese)
    - `tech_stack_selection.md` - Technology choices and rationale (Japanese)
 
-2. **Verify project state**: Check if `src/` directory exists and contains implementation files
-   - If YES: Continue with development following the task sequence
-   - If NO: Start with Task 0 (Project Setup) from `task_breakdown.md`
+2. **Check current implementation status**:
+   - Task 0 (Project Setup) is complete
+   - Currently working on Task 1 (Type definitions)
+   - Follow the task sequence in order
 
 3. **Follow the bottom-up approach**: Data Layer → Business Logic → UI Layer → Integration
 
@@ -372,4 +367,12 @@ If you're starting work on this project:
 
 ### Current Implementation Status
 
-As of this document's last update, the project is in **planning stage only**. No code has been implemented yet. The next step is Task 0: Project Setup.
+**Completed:**
+- ✅ Task 0: Project Setup (PR #6)
+  - Vite + React + TypeScript project initialized
+  - Dependencies installed
+  - Directory structure created
+  - PWA configuration added
+
+**Next:**
+- Task 1: Type definitions (`src/types/index.ts`)
