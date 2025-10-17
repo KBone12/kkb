@@ -13,12 +13,13 @@ Closes #
 
 ## Type of Change
 <!-- Check the relevant boxes -->
-- [ ] Feature (new functionality)
-- [ ] Bug fix (fixes an issue)
-- [ ] Refactoring (code improvement without behavior change)
-- [ ] Documentation (updates to docs)
-- [ ] Tests (adding or updating tests)
-- [ ] Chore (maintenance tasks)
+- [ ] feat: New feature
+- [ ] fix: Bug fix
+- [ ] refactor: Code refactoring
+- [ ] test: Adding or updating tests
+- [ ] docs: Documentation changes
+- [ ] style: Code style changes (formatting, etc.)
+- [ ] chore: Maintenance tasks
 
 ## Test Plan
 <!-- Describe how you tested these changes -->
