@@ -6,9 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **KKB (K's Kakeibo)** is a double-entry bookkeeping household budget application being developed as a replacement for GnuCash. The project aims to maintain GnuCash's strengths (local-first, double-entry accounting) while solving smartphone compatibility and Japanese input issues.
 
-**Development Stage:** Planning phase completed; implementation in progress.
+**Development Stage:** Planning phase completed; implementation NOT YET STARTED.
 
 **Target Timeline:** 1-2 weeks for MVP (Phase 1)
+
+**Related Documents:**
+- `requirements.md` - Detailed requirements specification (in Japanese)
+- `task_breakdown.md` - Phase 1 task breakdown (in Japanese)
+- `tech_stack_selection.md` - Technical stack selection rationale (in Japanese)
 
 ## Core Design Principles
 
@@ -68,15 +73,23 @@ src/
 
 ## Development Commands
 
-### Setup
+### Initial Setup (NOT YET DONE)
+The project structure exists but no code has been implemented yet. To start development:
+
 ```bash
+# Create the Vite project
 npm create vite@latest household-budget -- --template react-ts
 cd household-budget
+
+# Install dependencies
 npm install react-router-dom
 npm install -D sass vite-plugin-pwa vitest
+
+# Start development
+npm run dev
 ```
 
-### Development
+### Development (Once setup is complete)
 ```bash
 npm run dev          # Start dev server (http://localhost:5173)
 ```
@@ -90,6 +103,7 @@ npm run preview      # Preview production build
 ### Testing
 ```bash
 npm run test         # Run tests (Vitest)
+npm run test:ui      # Run tests with UI
 ```
 
 ## Data Architecture
@@ -336,3 +350,26 @@ When creating PRs:
 - **Code and documentation:** English
 - **UI text and messages:** Japanese (日本語)
 - Comments in code may be in Japanese for complex business logic
+
+## Getting Started
+
+### For New Claude Code Instances
+
+If you're starting work on this project:
+
+1. **Read the planning documents** first to understand the full context:
+   - `requirements.md` - Complete requirements (Japanese)
+   - `task_breakdown.md` - Detailed task breakdown with implementation order (Japanese)
+   - `tech_stack_selection.md` - Technology choices and rationale (Japanese)
+
+2. **Verify project state**: Check if `src/` directory exists and contains implementation files
+   - If YES: Continue with development following the task sequence
+   - If NO: Start with Task 0 (Project Setup) from `task_breakdown.md`
+
+3. **Follow the bottom-up approach**: Data Layer → Business Logic → UI Layer → Integration
+
+4. **Use GitHub workflow**: Create issue → Create branch → Implement → Push → Create PR
+
+### Current Implementation Status
+
+As of this document's last update, the project is in **planning stage only**. No code has been implemented yet. The next step is Task 0: Project Setup.
