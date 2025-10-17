@@ -1,0 +1,287 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+**KKB (K's Kakeibo)** is a double-entry bookkeeping household budget application being developed as a replacement for GnuCash. The project aims to maintain GnuCash's strengths (local-first, double-entry accounting) while solving smartphone compatibility and Japanese input issues.
+
+**Development Stage:** Planning phase completed; implementation in progress.
+
+**Target Timeline:** 1-2 weeks for MVP (Phase 1)
+
+## Core Design Principles
+
+1. **Local-first architecture** - All data stored locally; cloud sync is optional
+2. **Double-entry accounting** - Debit and credit must always balance
+3. **Progressive enhancement** - Start with JSON storage, migrate to SQLite if needed
+4. **YAGNI principle** - Implement only what's necessary for current phase
+5. **Data integrity first** - Validation and data layer come before UI
+
+## Technical Stack (Phase 1)
+
+- **Build Tool:** Vite
+- **Framework:** React 18+ with TypeScript (strict mode)
+- **Routing:** React Router DOM
+- **State Management:** Context API (upgrade to Zustand if complexity increases)
+- **Styling:** SCSS + CSS Variables
+- **Data Storage:** JSON in localStorage (IndexedDB for >5MB data)
+- **File Operations:** File System Access API with fallback
+- **Distribution:** PWA (Progressive Web App)
+
+**Deferred to later phases:**
+- Rust/WASM (for GnuCash XML parsing and complex calculations)
+- SQLite/sql.js (when data exceeds 10,000 transactions)
+- Tauri (for native app distribution)
+
+## Project Structure
+
+```
+src/
+├── types/           # TypeScript type definitions (Account, Transaction, Entry, etc.)
+├── store/           # Data store and React Context
+│   ├── DataStore.ts # Core data management class
+│   ├── AppContext.tsx
+│   └── hooks.ts     # Custom hooks (useAccounts, useTransactions)
+├── services/        # Business logic layer
+│   ├── fileService.ts    # Import/export JSON files
+│   ├── storageService.ts # localStorage/IndexedDB wrapper
+│   ├── reportService.ts  # P&L, balance sheet calculations
+│   ├── importService.ts  # GnuCash XML import (Phase 3+)
+│   └── syncService.ts    # Cloud sync (Phase 3+)
+├── utils/           # Pure utility functions
+│   ├── date.ts
+│   ├── id.ts       # UUID generation
+│   ├── validation.ts
+│   └── calculations.ts
+├── pages/           # Page components (route endpoints)
+│   ├── Dashboard.tsx
+│   ├── Transactions/
+│   ├── Accounts/
+│   ├── Reports/
+│   └── Settings/
+├── components/      # Reusable UI components
+│   ├── Layout/     # Header, Sidebar, Footer
+│   └── Common/     # Button, Input, Select, DatePicker, Modal
+└── styles/          # SCSS files with CSS Variables
+```
+
+## Development Commands
+
+### Setup
+```bash
+npm create vite@latest household-budget -- --template react-ts
+cd household-budget
+npm install react-router-dom
+npm install -D sass vite-plugin-pwa vitest
+```
+
+### Development
+```bash
+npm run dev          # Start dev server (http://localhost:5173)
+```
+
+### Build
+```bash
+npm run build        # Production build
+npm run preview      # Preview production build
+```
+
+### Testing
+```bash
+npm run test         # Run tests (Vitest)
+```
+
+## Data Architecture
+
+### Core Data Types
+
+All data types are defined in `src/types/index.ts`:
+
+- **Account** - Chart of accounts with hierarchy support
+  - Types: 資産 (Asset), 負債 (Liability), 純資産 (Equity), 収益 (Revenue), 費用 (Expense)
+  - Fields: id, name, type, parent_id, currency, is_active, timestamps
+
+- **Transaction** - Financial transactions
+  - Contains multiple Entry records (double-entry)
+  - Fields: id, date, description, entries[], timestamps
+
+- **Entry** - Journal entry line item
+  - Fields: account_id, debit, credit
+  - Constraint: Sum of debits must equal sum of credits
+
+- **AppData** - Root data structure
+  - Contains: accounts[], transactions[], version, lastModified
+
+### Data Flow
+
+```
+UI Component → Custom Hook (useAccounts/useTransactions)
+     ↓
+React Context (AppContext)
+     ↓
+DataStore (business logic + validation)
+     ↓
+Storage Service (localStorage/IndexedDB)
+```
+
+### Validation Rules
+
+**Critical validations in DataStore:**
+1. Transaction balance check: `sum(debits) === sum(credits)`
+2. Account deletion: If account has transactions, set `is_active = false` instead of deleting
+3. Parent account type matching: Child accounts must have same type as parent
+4. Required fields validation
+
+## Implementation Approach
+
+### Development Order (Bottom-Up)
+
+Follow this strict order to minimize rework:
+
+```
+Data Layer → Business Logic → UI Layer → Integration
+```
+
+**Rationale:** The data layer is the foundation. Building UI before data is stable leads to major refactoring.
+
+### Phase 1 Milestones
+
+1. **Week 1 前半** - Data persistence working (Tasks 0-3)
+2. **Week 1 後半** - Transaction entry working (Tasks 4-6)
+3. **Week 2 前半** - Data viewing working (Tasks 7-8)
+4. **Week 2 後半** - MVP complete (Tasks 9-12)
+
+### Task Sequence (Phase 1 MVP)
+
+0. Project setup (Vite + React + TypeScript)
+1. Type definitions (`src/types/`)
+2. **DataStore implementation** (most critical - test thoroughly)
+3. React Context integration
+4. Routing and layout
+5. Account management UI
+6. Transaction entry form
+7. Transaction list view
+8. Reports (P&L and Balance Sheet)
+9. File import/export
+10. Error handling and loading states
+11. Testing and debugging
+12. Documentation
+
+**Why this order?** Each task depends on the previous being stable. DataStore (Task 2) is the most critical component - if this is buggy, everything breaks.
+
+## Critical Implementation Notes
+
+### DataStore Testing
+
+Before proceeding to UI, verify DataStore with these tests:
+- Save and load data from localStorage
+- Transaction validation: reject unbalanced entries
+- Account deletion: transactions should prevent deletion
+- Edge cases: empty data, large datasets (100+ transactions)
+
+### Transaction Entry Form
+
+The most complex UI component. Key requirements:
+- Dynamic entry rows (add/remove journal entries)
+- Real-time debit/credit totals
+- Balance mismatch warning
+- Disable save button if not balanced
+
+### Report Calculations
+
+Core calculation logic in `reportService.ts`:
+- `calculateAccountBalance(accountId, transactions, endDate?)` - account balance at a point in time
+- `generateIncomeStatement(transactions, accounts, startDate, endDate)` - P&L statement
+- `generateBalanceSheet(transactions, accounts, date)` - balance sheet
+
+**Verification:** Balance sheet must balance: `Assets = Liabilities + Equity`
+
+## File Operations
+
+### Export/Import Flow
+
+```typescript
+// Export: AppData → JSON.stringify → File System Access API → Save to disk
+// Import: Load from disk → JSON.parse → Validate schema → DataStore.load()
+```
+
+**Browser Compatibility:**
+- Chrome/Edge: Use File System Access API (can overwrite files)
+- Firefox/Safari: Fallback to download/upload with `<a>` tag and file input
+
+## Coding Standards
+
+### TypeScript
+- Use `strict: true` mode
+- Avoid `any` type - use `unknown` if necessary
+- Explicit return types for all functions
+- Prefer interfaces over types for object shapes
+
+### React
+- Function components only (no class components)
+- Explicit prop types with interfaces
+- Accurate dependency arrays in `useEffect`
+- Use `React.memo()` only when profiling shows performance issues
+
+### Styling
+- SCSS with BEM naming convention (recommended)
+- CSS Variables for colors, spacing, fonts
+- Mobile-first responsive design (deferred to Phase 2)
+
+### File Naming
+- Components: PascalCase (e.g., `AccountList.tsx`)
+- Utilities: camelCase (e.g., `dateUtils.ts`)
+- Constants: UPPER_SNAKE_CASE
+
+## Common Debugging Scenarios
+
+### Data not persisting
+1. Check localStorage in DevTools (Application > Local Storage)
+2. Verify `DataStore.save()` is called after mutations
+3. Check console for errors
+
+### Balance sheet doesn't balance
+1. Verify all transactions have balanced entries
+2. Check account type classification (asset/liability/equity)
+3. Verify calculation logic includes all relevant accounts
+
+### Component not re-rendering
+1. Verify Context value is changing (not mutating in place)
+2. Check `useEffect` dependency arrays
+3. Confirm state updates are immutable
+
+## Phase Boundaries
+
+### Phase 1 Scope (MVP)
+**INCLUDED:** Account management, transaction entry/list, P&L/BS reports, file import/export
+
+**EXCLUDED:**
+- Smartphone-optimized UI (responsive design)
+- GnuCash XML import
+- Cloud sync (Google Drive)
+- Budget management
+- Charts/graphs
+- Templates
+- Multi-currency support
+
+### When to Stop and Review
+
+Before moving to Phase 2, ensure:
+- All Phase 1 tasks (0-12) completed
+- Manual testing of core workflows successful
+- Data can survive browser reload and file export/import
+- No critical bugs (minor UI issues acceptable)
+
+## Performance Targets
+
+- **Startup:** <3 seconds
+- **Transaction entry response:** <1 second
+- **Report generation:** <5 seconds (for annual data)
+- **Data size:** Optimize for 1000-5000 transactions/year
+
+## Translation Note
+
+- **Code and documentation:** English
+- **UI text and messages:** Japanese (日本語)
+- Comments in code may be in Japanese for complex business logic
