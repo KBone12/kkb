@@ -45,26 +45,31 @@ export default function AccountManagement() {
   };
 
   const handleSubmit = (data: AccountFormData) => {
-    if (editingAccount) {
-      // Update existing account
-      updateAccount(editingAccount.id, {
-        name: data.name,
-        parent_id: data.parent_id,
-        currency: data.currency,
-        // Note: type cannot be changed
-      });
-    } else {
-      // Create new account
-      createAccount({
-        name: data.name,
-        type: data.type,
-        parent_id: data.parent_id,
-        currency: data.currency,
-      });
-    }
+    try {
+      if (editingAccount) {
+        // Update existing account
+        updateAccount(editingAccount.id, {
+          name: data.name,
+          parent_id: data.parent_id,
+          currency: data.currency,
+          // Note: type cannot be changed
+        });
+      } else {
+        // Create new account
+        createAccount({
+          name: data.name,
+          type: data.type,
+          parent_id: data.parent_id,
+          currency: data.currency,
+        });
+      }
 
-    setIsFormOpen(false);
-    setEditingAccount(null);
+      setIsFormOpen(false);
+      setEditingAccount(null);
+    } catch (error) {
+      console.error('Failed to save account:', error);
+      alert(`保存に失敗しました: ${error instanceof Error ? error.message : '不明なエラー'}`);
+    }
   };
 
   const handleCancel = () => {
