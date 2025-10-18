@@ -61,7 +61,10 @@ export class DataStore {
    * @throws ValidationError if validation fails
    */
   createAccount(
-    input: Omit<Account, 'id' | 'created_at' | 'updated_at'>
+    input: Omit<Account, 'id' | 'created_at' | 'updated_at' | 'currency' | 'is_active'> & {
+      currency?: string;
+      is_active?: boolean;
+    }
   ): Account {
     const now = getCurrentTimestamp();
     const account: Account = {

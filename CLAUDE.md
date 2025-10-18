@@ -6,11 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **KKB (K's Kakeibo)** is a double-entry bookkeeping household budget application being developed as a replacement for GnuCash. The project aims to maintain GnuCash's strengths (local-first, double-entry accounting) while solving smartphone compatibility and Japanese input issues.
 
-**Development Stage:** Tasks 0-2 completed; implementation in progress.
+**Development Stage:** Tasks 0-3 completed; implementation in progress.
 
 **Target Timeline:** 1-2 weeks for MVP (Phase 1)
 
-**Current Task:** Task 3 - React Context integration
+**Current Task:** Task 4 - Routing and layout
 
 **Related Documents:**
 - `requirements.md` - Detailed requirements specification (in Japanese)
@@ -165,8 +165,8 @@ Data Layer → Business Logic → UI Layer → Integration
 0. ✅ Project setup (Vite + React + TypeScript) - **COMPLETED**
 1. ✅ Type definitions (`src/types/`) - **COMPLETED**
 2. ✅ **DataStore implementation** (most critical - test thoroughly) - **COMPLETED**
-3. React Context integration - **NEXT**
-4. Routing and layout
+3. ✅ React Context integration - **COMPLETED**
+4. Routing and layout - **NEXT**
 5. Account management UI
 6. Transaction entry form
 7. Transaction list view
@@ -367,8 +367,8 @@ If you're starting work on this project:
    - `tech_stack_selection.md` - Technology choices and rationale (Japanese)
 
 2. **Check current implementation status**:
-   - Tasks 0-2 (Project Setup, Type definitions, DataStore) are complete
-   - Currently working on Task 3 (React Context integration)
+   - Tasks 0-3 (Project Setup, Type definitions, DataStore, React Context) are complete
+   - Currently working on Task 4 (Routing and layout)
    - Follow the task sequence in order
 
 3. **Follow the bottom-up approach**: Data Layer → Business Logic → UI Layer → Integration
@@ -395,5 +395,12 @@ If you're starting work on this project:
   - Utility functions (UUID generation, date handling)
   - 29 passing unit tests
 
+- ✅ Task 3: React Context integration (PR #12)
+  - AppContext with DataStore integration and localStorage persistence
+  - Custom hooks: useAccounts and useTransactions
+  - Comprehensive tests (16 tests for Context, 45 total)
+  - Demo UI integrated in App.tsx
+  - Optimized with useMemo for performance
+
 **Next:**
-- Task 3: React Context integration (`src/store/AppContext.tsx`, `src/store/hooks.ts`)
+- Task 4: Routing and layout

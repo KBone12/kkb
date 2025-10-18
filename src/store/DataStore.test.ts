@@ -4,7 +4,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { DataStore, ValidationError } from './DataStore';
-import type { Account, Transaction } from '../types';
+import type { Account } from '../types';
 
 describe('DataStore', () => {
   let store: DataStore;
