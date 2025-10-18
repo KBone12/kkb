@@ -6,11 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **KKB (K's Kakeibo)** is a double-entry bookkeeping household budget application being developed as a replacement for GnuCash. The project aims to maintain GnuCash's strengths (local-first, double-entry accounting) while solving smartphone compatibility and Japanese input issues.
 
-**Development Stage:** Task 0 (Project Setup) completed; implementation in progress.
+**Development Stage:** Tasks 0-2 completed; implementation in progress.
 
 **Target Timeline:** 1-2 weeks for MVP (Phase 1)
 
-**Current Task:** Task 1 - Type definitions (`src/types/index.ts`)
+**Current Task:** Task 3 - React Context integration
 
 **Related Documents:**
 - `requirements.md` - Detailed requirements specification (in Japanese)
@@ -163,9 +163,9 @@ Data Layer → Business Logic → UI Layer → Integration
 ### Task Sequence (Phase 1 MVP)
 
 0. ✅ Project setup (Vite + React + TypeScript) - **COMPLETED**
-1. Type definitions (`src/types/`) - **NEXT**
-2. **DataStore implementation** (most critical - test thoroughly)
-3. React Context integration
+1. ✅ Type definitions (`src/types/`) - **COMPLETED**
+2. ✅ **DataStore implementation** (most critical - test thoroughly) - **COMPLETED**
+3. React Context integration - **NEXT**
 4. Routing and layout
 5. Account management UI
 6. Transaction entry form
@@ -339,6 +339,16 @@ When creating PRs:
   - Test plan/checklist
   - Reference to issue: `Closes #XX`
 
+### Git Commit Rules
+
+**IMPORTANT:**
+- **NEVER use `git commit --amend` after `git push`**
+  - Once commits are pushed to remote, they should not be modified
+  - Amending pushed commits can cause issues for collaborators and PR reviews
+  - If you need to make changes after pushing, create a new commit instead
+- You may amend commits that are still local (before first push)
+- Use `git revert` to undo changes in pushed commits if necessary
+
 ## Translation Note
 
 - **Code and documentation:** English
@@ -357,8 +367,8 @@ If you're starting work on this project:
    - `tech_stack_selection.md` - Technology choices and rationale (Japanese)
 
 2. **Check current implementation status**:
-   - Task 0 (Project Setup) is complete
-   - Currently working on Task 1 (Type definitions)
+   - Tasks 0-2 (Project Setup, Type definitions, DataStore) are complete
+   - Currently working on Task 3 (React Context integration)
    - Follow the task sequence in order
 
 3. **Follow the bottom-up approach**: Data Layer → Business Logic → UI Layer → Integration
@@ -374,5 +384,16 @@ If you're starting work on this project:
   - Directory structure created
   - PWA configuration added
 
+- ✅ Task 1: Type definitions (PR #8)
+  - Core type definitions: Account, Transaction, Entry, AppData
+  - Account type labels and constants
+  - TypeScript strict mode compatible
+
+- ✅ Task 2: DataStore implementation (PR #10)
+  - Core data management class with CRUD operations
+  - Comprehensive validation logic (balance check, soft delete, type matching)
+  - Utility functions (UUID generation, date handling)
+  - 29 passing unit tests
+
 **Next:**
-- Task 1: Type definitions (`src/types/index.ts`)
+- Task 3: React Context integration (`src/store/AppContext.tsx`, `src/store/hooks.ts`)

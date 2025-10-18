@@ -1,0 +1,34 @@
+/**
+ * Date utilities
+ */
+
+/**
+ * Get current timestamp in ISO 8601 format
+ * @returns ISO 8601 timestamp string (e.g., "2025-10-18T12:34:56.789Z")
+ */
+export function getCurrentTimestamp(): string {
+  return new Date().toISOString();
+}
+
+/**
+ * Get current date in ISO 8601 date format
+ * @returns ISO 8601 date string (e.g., "2025-10-18")
+ */
+export function getCurrentDate(): string {
+  return new Date().toISOString().split('T')[0];
+}
+
+/**
+ * Validate if a string is a valid ISO 8601 date (YYYY-MM-DD)
+ * @param dateString - Date string to validate
+ * @returns True if valid ISO 8601 date
+ */
+export function isValidDate(dateString: string): boolean {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!regex.test(dateString)) {
+    return false;
+  }
+
+  const date = new Date(dateString);
+  return !isNaN(date.getTime());
+}
