@@ -146,7 +146,6 @@
 /* Account Management */
 .account-management {
   max-width: 1200px;
-  color: var(--color-text);
 }
 
 .account-management__header {
