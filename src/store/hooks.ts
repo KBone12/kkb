@@ -13,6 +13,8 @@ export function useAccounts() {
   const { dataStore, refresh, data } = useAppContext();
 
   // Memoize accounts list to prevent unnecessary recalculations
+  // dataStore is stable (created once in AppProvider), so we only watch data.accounts
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const accounts = useMemo(() => dataStore.getAccounts(), [data.accounts]);
 
   const getAllAccounts = useCallback(
@@ -81,6 +83,8 @@ export function useTransactions() {
   const { dataStore, refresh, data } = useAppContext();
 
   // Memoize transactions list to prevent unnecessary recalculations
+  // dataStore is stable (created once in AppProvider), so we only watch data.transactions
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const transactions = useMemo(() => dataStore.getTransactions(), [data.transactions]);
 
   const getAllTransactions = useCallback((): Transaction[] => {
