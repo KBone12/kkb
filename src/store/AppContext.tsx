@@ -82,7 +82,8 @@ export function AppProvider({ children }: AppProviderProps): React.JSX.Element {
     } finally {
       setLoading(false);
     }
-  }, [refresh]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value: AppContextValue = {
     dataStore,

@@ -2,7 +2,7 @@
  * Custom hooks for accessing and manipulating data
  */
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useAppContext } from './AppContext';
 import type { Account, Transaction } from '../types';
 
@@ -10,7 +10,10 @@ import type { Account, Transaction } from '../types';
  * Hook for managing accounts
  */
 export function useAccounts() {
-  const { dataStore, refresh } = useAppContext();
+  const { dataStore, refresh, data } = useAppContext();
+
+  // Memoize accounts list to prevent unnecessary recalculations
+  const accounts = useMemo(() => dataStore.getAccounts(), [data.accounts]);
 
   const getAllAccounts = useCallback(
     (activeOnly: boolean = false): Account[] => {
@@ -62,7 +65,7 @@ export function useAccounts() {
   );
 
   return {
-    accounts: getAllAccounts(),
+    accounts,
     getAllAccounts,
     getAccountById,
     createAccount,
@@ -75,7 +78,10 @@ export function useAccounts() {
  * Hook for managing transactions
  */
 export function useTransactions() {
-  const { dataStore, refresh } = useAppContext();
+  const { dataStore, refresh, data } = useAppContext();
+
+  // Memoize transactions list to prevent unnecessary recalculations
+  const transactions = useMemo(() => dataStore.getTransactions(), [data.transactions]);
 
   const getAllTransactions = useCallback((): Transaction[] => {
     return dataStore.getTransactions();
@@ -121,7 +127,7 @@ export function useTransactions() {
   );
 
   return {
-    transactions: getAllTransactions(),
+    transactions,
     getAllTransactions,
     getTransactionById,
     createTransaction,
