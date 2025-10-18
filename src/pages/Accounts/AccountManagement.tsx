@@ -3,6 +3,7 @@ import { useAccounts, useTransactions } from '../../store/hooks';
 import type { Account } from '../../types';
 import AccountList from '../../components/Accounts/AccountList';
 import AccountForm, { type AccountFormData } from '../../components/Accounts/AccountForm';
+import { createInitialAccounts } from '../../utils/seedData';
 
 export default function AccountManagement() {
   const { accounts, createAccount, updateAccount, deleteAccount } = useAccounts();
@@ -71,17 +72,49 @@ export default function AccountManagement() {
     setEditingAccount(null);
   };
 
+  const handleLoadInitialData = () => {
+    const confirmed = window.confirm(
+      '初期勘定科目をロードしますか？\n\n以下の勘定科目が追加されます：\n' +
+        '• 現金、普通預金（資産）\n' +
+        '• クレジットカード（負債）\n' +
+        '• 開始残高（純資産）\n' +
+        '• 給与（収益）\n' +
+        '• 食費、交通費、光熱費（費用）'
+    );
+
+    if (!confirmed) return;
+
+    const initialAccounts = createInitialAccounts();
+    initialAccounts.forEach((account) => {
+      createAccount({
+        name: account.name,
+        type: account.type,
+        parent_id: account.parent_id,
+        currency: account.currency,
+      });
+    });
+  };
+
   return (
     <div className="account-management">
       <div className="account-management__header">
         <h1 className="account-management__title">勘定科目管理</h1>
-        <button
-          onClick={handleCreate}
-          className="account-management__create-btn"
-          disabled={isFormOpen}
-        >
-          新規作成
-        </button>
+        <div className="account-management__actions">
+          <button
+            onClick={handleLoadInitialData}
+            className="account-management__secondary-btn"
+            disabled={isFormOpen}
+          >
+            初期データをロード
+          </button>
+          <button
+            onClick={handleCreate}
+            className="account-management__create-btn"
+            disabled={isFormOpen}
+          >
+            新規作成
+          </button>
+        </div>
       </div>
 
       {isFormOpen && (
