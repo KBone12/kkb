@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Target Timeline:** 1-2 weeks for MVP (Phase 1)
 
-**Current Task:** Task 4 - Routing and layout
+**Current Task:** Task 6 - Transaction entry form
 
 **Related Documents:**
 - `requirements.md` - Detailed requirements specification (in Japanese)
@@ -166,9 +166,9 @@ Data Layer → Business Logic → UI Layer → Integration
 1. ✅ Type definitions (`src/types/`) - **COMPLETED**
 2. ✅ **DataStore implementation** (most critical - test thoroughly) - **COMPLETED**
 3. ✅ React Context integration - **COMPLETED**
-4. Routing and layout - **NEXT**
-5. Account management UI
-6. Transaction entry form
+4. ✅ Routing and layout - **COMPLETED**
+5. ✅ Account management UI - **COMPLETED**
+6. Transaction entry form - **NEXT**
 7. Transaction list view
 8. Reports (P&L and Balance Sheet)
 9. File import/export
@@ -402,5 +402,23 @@ If you're starting work on this project:
   - Demo UI integrated in App.tsx
   - Optimized with useMemo for performance
 
+- ✅ Task 4: Routing and layout (PR #14)
+  - React Router DOM v6 implementation
+  - 7 page routes defined (Dashboard, Transactions, Accounts, Reports, Settings)
+  - Layout components: Header, Sidebar, Footer, MainLayout
+  - Placeholder pages for all routes
+  - CSS Variables-based styling with BEM naming
+  - 9 tests added (54 total)
+
+- ✅ Task 5: Account management UI (PR #16)
+  - AccountList component with hierarchical display
+  - AccountForm component with create/edit modes
+  - Full CRUD operations (Create, Read, Update, Delete)
+  - Soft delete for accounts with transactions
+  - Form validation (required fields, duplicate check, type matching)
+  - Initial account data seeder (8 basic accounts)
+  - Error handling with try-catch and user feedback
+  - 13 tests added (81 total)
+
 **Next:**
-- Task 4: Routing and layout
+- Task 6: Transaction entry form
