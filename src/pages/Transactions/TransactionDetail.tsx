@@ -118,20 +118,20 @@ export default function TransactionDetail() {
                     {getAccountName(accounts, entry.account_id)}
                   </td>
                   <td className="transaction-detail__td--debit">
-                    {entry.debit > 0 ? `${entry.debit.toLocaleString()}円` : ''}
+                    {entry.debit > 0 ? `${entry.debit.toLocaleString('ja-JP')}円` : ''}
                   </td>
                   <td className="transaction-detail__td--credit">
-                    {entry.credit > 0 ? `${entry.credit.toLocaleString()}円` : ''}
+                    {entry.credit > 0 ? `${entry.credit.toLocaleString('ja-JP')}円` : ''}
                   </td>
                 </tr>
               ))}
               <tr className="transaction-detail__row--total">
                 <td className="transaction-detail__td--label">合計</td>
                 <td className="transaction-detail__td--debit-total">
-                  {debitTotal.toLocaleString()}円
+                  {debitTotal.toLocaleString('ja-JP')}円
                 </td>
                 <td className="transaction-detail__td--credit-total">
-                  {creditTotal.toLocaleString()}円
+                  {creditTotal.toLocaleString('ja-JP')}円
                 </td>
               </tr>
             </tbody>

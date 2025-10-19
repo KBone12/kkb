@@ -98,7 +98,7 @@ export default function TransactionList({
                   </td>
 
                   <td className="transaction-list__cell--debit-amount">
-                    {debitEntries[rowIdx] && `${debitEntries[rowIdx].debit.toLocaleString()}円`}
+                    {debitEntries[rowIdx] && `${debitEntries[rowIdx].debit.toLocaleString('ja-JP')}円`}
                   </td>
 
                   <td className="transaction-list__cell--credit-account">
@@ -106,7 +106,7 @@ export default function TransactionList({
                   </td>
 
                   <td className="transaction-list__cell--credit-amount">
-                    {creditEntries[rowIdx] && `${creditEntries[rowIdx].credit.toLocaleString()}円`}
+                    {creditEntries[rowIdx] && `${creditEntries[rowIdx].credit.toLocaleString('ja-JP')}円`}
                   </td>
 
                   {rowIdx === 0 && (
