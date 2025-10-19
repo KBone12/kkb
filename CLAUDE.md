@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Target Timeline:** 1-2 weeks for MVP (Phase 1)
 
-**Current Task:** Task 8 - Reports (P&L and Balance Sheet)
+**Current Task:** Task 9 - File import/export
 
 **Related Documents:**
 - `requirements.md` - Detailed requirements specification (in Japanese)
@@ -170,8 +170,8 @@ Data Layer → Business Logic → UI Layer → Integration
 5. ✅ Account management UI - **COMPLETED**
 6. ✅ Transaction entry form - **COMPLETED**
 7. ✅ Transaction list view - **COMPLETED**
-8. Reports (P&L and Balance Sheet) - **NEXT**
-9. File import/export
+8. ✅ Reports (P&L and Balance Sheet) - **COMPLETED**
+9. File import/export - **NEXT**
 10. Error handling and loading states
 11. Testing and debugging
 12. Documentation
@@ -233,9 +233,12 @@ Core calculation logic in `reportService.ts`:
 - Use `React.memo()` only when profiling shows performance issues
 
 ### Styling
-- SCSS with BEM naming convention (recommended)
+- CSS (not SCSS) - All styles in App.css
+- BEM naming convention
 - CSS Variables for colors, spacing, fonts
+- Dark mode support with `color-scheme: light dark`
 - Mobile-first responsive design (deferred to Phase 2)
+- **Important:** Elements with background colors need explicit color properties
 
 ### File Naming
 - Components: PascalCase (e.g., `AccountList.tsx`)
@@ -448,5 +451,28 @@ If you're starting work on this project:
   - Date parsing vulnerability fixed
   - 32 new tests added (143 total)
 
+- ✅ Task 8: Reports (P&L and Balance Sheet) (PR #22)
+  - Report calculation service (reportService.ts):
+    - calculateAccountBalance - Account balance at a point in time
+    - generateIncomeStatement - P&L for a given period
+    - generateBalanceSheet - Balance sheet as of a given date
+  - Income Statement page (損益計算書):
+    - Period selection (start/end date)
+    - Revenue and expense sections with totals
+    - Net income calculation with color-coded display
+  - Balance Sheet page (貸借対照表):
+    - As-of date selection
+    - Two-column layout: Assets | Liabilities + Equity
+    - Balance sheet equation verification (Assets = Liabilities + Equity)
+    - Warning display for unbalanced data
+  - Dark mode compatible styling in App.css
+  - Type-only imports for better compatibility
+  - 41 new tests added (17 service + 24 UI, 184 total)
+
 **Next:**
-- Task 8: Reports (P&L and Balance Sheet)
+- Task 9: File import/export
+
+**Changes from task_breakdown.md:**
+- Styling approach: Using CSS in App.css instead of SCSS (project uses CSS, not SCSS)
+- Dark mode support: Added explicit dark mode compatibility requirements
+- Elements with background colors need explicit color properties to work in both light and dark modes
