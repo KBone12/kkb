@@ -782,6 +782,7 @@
   padding: var(--spacing-sm) var(--spacing-md);
   text-align: left;
   font-weight: 600;
+  color: var(--color-text);
   border-bottom: 2px solid var(--color-border);
 }
 
@@ -790,6 +791,7 @@
   padding: var(--spacing-sm) var(--spacing-md);
   text-align: right;
   font-weight: 600;
+  color: var(--color-text);
   border-bottom: 2px solid var(--color-border);
 }
 
