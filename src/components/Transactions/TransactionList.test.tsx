@@ -210,8 +210,8 @@ describe('TransactionList', () => {
       />
     );
 
-    expect(screen.getAllByText(/借方:/)).toHaveLength(2);
-    expect(screen.getAllByText(/貸方:/)).toHaveLength(2);
+    expect(screen.getAllByText(/借方/)).toHaveLength(2);
+    expect(screen.getAllByText(/貸方/)).toHaveLength(2);
   });
 
   it('handles unknown account gracefully', () => {

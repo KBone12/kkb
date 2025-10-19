@@ -202,87 +202,84 @@ export default function TransactionForm({
         </div>
       </div>
 
-      <div className="transaction-form__entries">
-        <h4 className="transaction-form__entries-title">仕訳</h4>
+      <fieldset className="transaction-form__entries">
+        <legend className="transaction-form__entries-title">仕訳</legend>
 
-        <div className="transaction-form__entries-header">
-          <div className="transaction-form__entries-col transaction-form__entries-col--account">
-            勘定科目
-          </div>
-          <div className="transaction-form__entries-col transaction-form__entries-col--debit">
-            借方
-          </div>
-          <div className="transaction-form__entries-col transaction-form__entries-col--credit">
-            貸方
-          </div>
-          <div className="transaction-form__entries-col transaction-form__entries-col--actions">
-            操作
-          </div>
-        </div>
+        <table className="transaction-form__entries-table">
+          <thead>
+            <tr>
+              <th className="transaction-form__th--account">勘定科目</th>
+              <th className="transaction-form__th--debit">借方</th>
+              <th className="transaction-form__th--credit">貸方</th>
+              <th className="transaction-form__th--actions">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {formData.entries.map((entry, idx) => (
+              <tr key={entry.id} className="transaction-form__entry-row">
+                <td className="transaction-form__td--account">
+                  <select
+                    value={entry.account_id}
+                    onChange={(e) => handleEntryChange(entry.id, 'account_id', e.target.value)}
+                    className={`transaction-form__select ${errors[`entry-${idx}-account`] ? 'transaction-form__select--error' : ''}`}
+                    aria-label={`仕訳${idx + 1}の勘定科目`}
+                    aria-invalid={!!errors[`entry-${idx}-account`]}
+                  >
+                    <option value="">選択してください</option>
+                    {activeAccounts.map((account) => (
+                      <option key={account.id} value={account.id}>
+                        {account.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors[`entry-${idx}-account`] && (
+                    <p className="transaction-form__error" role="alert">
+                      {errors[`entry-${idx}-account`]}
+                    </p>
+                  )}
+                </td>
 
-        {formData.entries.map((entry, idx) => (
-          <div key={entry.id} className="transaction-form__entry-row">
-            <div className="transaction-form__entries-col transaction-form__entries-col--account">
-              <select
-                value={entry.account_id}
-                onChange={(e) => handleEntryChange(entry.id, 'account_id', e.target.value)}
-                className={`transaction-form__select ${errors[`entry-${idx}-account`] ? 'transaction-form__select--error' : ''}`}
-                aria-label={`仕訳${idx + 1}の勘定科目`}
-                aria-invalid={!!errors[`entry-${idx}-account`]}
-              >
-                <option value="">選択してください</option>
-                {activeAccounts.map((account) => (
-                  <option key={account.id} value={account.id}>
-                    {account.name}
-                  </option>
-                ))}
-              </select>
-              {errors[`entry-${idx}-account`] && (
-                <p className="transaction-form__error" role="alert">
-                  {errors[`entry-${idx}-account`]}
-                </p>
-              )}
-            </div>
+                <td className="transaction-form__td--debit">
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={entry.debit || ''}
+                    onChange={(e) => handleAmountChange(entry.id, 'debit', e.target.value)}
+                    className="transaction-form__amount-input"
+                    placeholder="0"
+                    aria-label={`仕訳${idx + 1}の借方金額`}
+                  />
+                </td>
 
-            <div className="transaction-form__entries-col transaction-form__entries-col--debit">
-              <input
-                type="number"
-                min="0"
-                step="1"
-                value={entry.debit || ''}
-                onChange={(e) => handleAmountChange(entry.id, 'debit', e.target.value)}
-                className="transaction-form__amount-input"
-                placeholder="0"
-                aria-label={`仕訳${idx + 1}の借方金額`}
-              />
-            </div>
+                <td className="transaction-form__td--credit">
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={entry.credit || ''}
+                    onChange={(e) => handleAmountChange(entry.id, 'credit', e.target.value)}
+                    className="transaction-form__amount-input"
+                    placeholder="0"
+                    aria-label={`仕訳${idx + 1}の貸方金額`}
+                  />
+                </td>
 
-            <div className="transaction-form__entries-col transaction-form__entries-col--credit">
-              <input
-                type="number"
-                min="0"
-                step="1"
-                value={entry.credit || ''}
-                onChange={(e) => handleAmountChange(entry.id, 'credit', e.target.value)}
-                className="transaction-form__amount-input"
-                placeholder="0"
-                aria-label={`仕訳${idx + 1}の貸方金額`}
-              />
-            </div>
-
-            <div className="transaction-form__entries-col transaction-form__entries-col--actions">
-              <button
-                type="button"
-                onClick={() => handleRemoveEntry(entry.id)}
-                disabled={formData.entries.length <= 2}
-                className="transaction-form__btn-remove"
-                aria-label={`仕訳${idx + 1}を削除`}
-              >
-                削除
-              </button>
-            </div>
-          </div>
-        ))}
+                <td className="transaction-form__td--actions">
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveEntry(entry.id)}
+                    disabled={formData.entries.length <= 2}
+                    className="transaction-form__btn-remove"
+                    aria-label={`仕訳${idx + 1}を削除`}
+                  >
+                    削除
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
         <button
           type="button"
@@ -297,7 +294,7 @@ export default function TransactionForm({
             {errors.entries}
           </p>
         )}
-      </div>
+      </fieldset>
 
       <div className="transaction-form__summary">
         <div className="transaction-form__totals">

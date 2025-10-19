@@ -40,78 +40,80 @@ export default function TransactionList({
   }
 
   return (
-    <div className="transaction-list">
-      <div className="transaction-list__header">
-        <div className="transaction-list__col transaction-list__col--date">日付</div>
-        <div className="transaction-list__col transaction-list__col--description">摘要</div>
-        <div className="transaction-list__col transaction-list__col--entries">仕訳内容</div>
-        <div className="transaction-list__col transaction-list__col--amount">金額</div>
-        <div className="transaction-list__col transaction-list__col--actions">操作</div>
-      </div>
+    <table className="transaction-list">
+      <thead>
+        <tr>
+          <th className="transaction-list__header--date">日付</th>
+          <th className="transaction-list__header--description">摘要</th>
+          <th className="transaction-list__header--entries">仕訳内容</th>
+          <th className="transaction-list__header--amount">金額</th>
+          <th className="transaction-list__header--actions">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sortedTransactions.map((transaction) => {
+          // Calculate total amount (use debit total)
+          const totalAmount = transaction.entries.reduce(
+            (sum, entry) => sum + entry.debit,
+            0
+          );
 
-      {sortedTransactions.map((transaction) => {
-        // Calculate total amount (use debit total)
-        const totalAmount = transaction.entries.reduce(
-          (sum, entry) => sum + entry.debit,
-          0
-        );
+          return (
+            <tr key={transaction.id} className="transaction-list__row">
+              <td className="transaction-list__cell--date">
+                {formatDate(transaction.date)}
+              </td>
 
-        return (
-          <div key={transaction.id} className="transaction-list__item">
-            <div className="transaction-list__col transaction-list__col--date">
-              {formatDate(transaction.date)}
-            </div>
+              <td className="transaction-list__cell--description">
+                {transaction.description}
+              </td>
 
-            <div className="transaction-list__col transaction-list__col--description">
-              {transaction.description}
-            </div>
-
-            <div className="transaction-list__col transaction-list__col--entries">
-              <div className="transaction-list__entries">
-                {transaction.entries.map((entry, idx) => (
-                  <div key={idx} className="transaction-list__entry">
-                    <span className="transaction-list__account">
-                      {getAccountName(entry.account_id)}
-                    </span>
-                    <span className="transaction-list__entry-amount">
+              <td className="transaction-list__cell--entries">
+                <ul className="transaction-list__entries">
+                  {transaction.entries.map((entry, idx) => (
+                    <li key={idx} className="transaction-list__entry">
+                      <span className="transaction-list__account">
+                        {getAccountName(entry.account_id)}
+                      </span>
+                      {': '}
                       {entry.debit > 0 ? (
                         <span className="transaction-list__debit">
-                          借方: {entry.debit.toLocaleString()}
+                          借方 {entry.debit.toLocaleString()}円
                         </span>
                       ) : (
                         <span className="transaction-list__credit">
-                          貸方: {entry.credit.toLocaleString()}
+                          貸方 {entry.credit.toLocaleString()}円
                         </span>
                       )}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+                    </li>
+                  ))}
+                </ul>
+              </td>
 
-            <div className="transaction-list__col transaction-list__col--amount">
-              {totalAmount.toLocaleString()} 円
-            </div>
+              <td className="transaction-list__cell--amount">
+                {totalAmount.toLocaleString()} 円
+              </td>
 
-            <div className="transaction-list__col transaction-list__col--actions">
-              <button
-                onClick={() => onEdit(transaction)}
-                className="transaction-list__btn transaction-list__btn--edit"
-                aria-label={`${transaction.description}を編集`}
-              >
-                編集
-              </button>
-              <button
-                onClick={() => onDelete(transaction)}
-                className="transaction-list__btn transaction-list__btn--delete"
-                aria-label={`${transaction.description}を削除`}
-              >
-                削除
-              </button>
-            </div>
-          </div>
-        );
-      })}
-    </div>
+              <td className="transaction-list__cell--actions">
+                <button
+                  onClick={() => onEdit(transaction)}
+                  className="transaction-list__btn transaction-list__btn--edit"
+                  aria-label={`${transaction.description}を編集`}
+                >
+                  編集
+                </button>
+                <button
+                  onClick={() => onDelete(transaction)}
+                  className="transaction-list__btn transaction-list__btn--delete"
+                  aria-label={`${transaction.description}を削除`}
+                >
+                  削除
+                </button>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
