@@ -1,4 +1,4 @@
-import { Account, Transaction } from '../types';
+import type { Account, Transaction } from '../types';
 
 /**
  * Account balance information
