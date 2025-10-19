@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAccounts, useTransactions } from '../../store/hooks';
 import type { Transaction } from '../../types';
+import { getAccountName } from '../../utils/account';
+import { formatDateJapanese } from '../../utils/date';
 
 export default function TransactionDetail() {
   const { id } = useParams<{ id: string }>();
@@ -33,18 +35,6 @@ export default function TransactionDetail() {
 
   const handleBack = () => {
     navigate('/transactions');
-  };
-
-  // Helper to get account name by ID
-  const getAccountName = (accountId: string): string => {
-    const account = accounts.find((a) => a.id === accountId);
-    return account ? account.name : '不明な勘定科目';
-  };
-
-  // Format date for display (YYYY年MM月DD日)
-  const formatDate = (dateString: string): string => {
-    const [year, month, day] = dateString.split('-');
-    return `${year}年${month}月${day}日`;
   };
 
   if (!transaction) {
@@ -99,7 +89,7 @@ export default function TransactionDetail() {
           <div className="transaction-detail__info-item">
             <span className="transaction-detail__info-label">日付:</span>
             <span className="transaction-detail__info-value">
-              {formatDate(transaction.date)}
+              {formatDateJapanese(transaction.date)}
             </span>
           </div>
           <div className="transaction-detail__info-item">
@@ -125,7 +115,7 @@ export default function TransactionDetail() {
               {transaction.entries.map((entry, index) => (
                 <tr key={index} className="transaction-detail__row">
                   <td className="transaction-detail__td--account">
-                    {getAccountName(entry.account_id)}
+                    {getAccountName(accounts, entry.account_id)}
                   </td>
                   <td className="transaction-detail__td--debit">
                     {entry.debit > 0 ? `${entry.debit.toLocaleString()}円` : ''}

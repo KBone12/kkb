@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Transaction, Account } from '../../types';
+import { getAccountName } from '../../utils/account';
+import { formatDateWithSlash } from '../../utils/date';
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -29,17 +31,6 @@ export default function TransactionList({
 
   const toggleSortOrder = () => {
     setSortOrder(sortOrder === 'newest' ? 'oldest' : 'newest');
-  };
-
-  // Helper to get account name by ID
-  const getAccountName = (accountId: string): string => {
-    const account = accounts.find((a) => a.id === accountId);
-    return account ? account.name : '不明な勘定科目';
-  };
-
-  // Format date for display (YYYY/MM/DD)
-  const formatDate = (dateString: string): string => {
-    return dateString.replace(/-/g, '/');
   };
 
   if (transactions.length === 0) {
@@ -90,7 +81,7 @@ export default function TransactionList({
                         className="transaction-list__cell--date"
                         rowSpan={maxRows}
                       >
-                        {formatDate(transaction.date)}
+                        {formatDateWithSlash(transaction.date)}
                       </td>
 
                       <td
@@ -103,7 +94,7 @@ export default function TransactionList({
                   )}
 
                   <td className="transaction-list__cell--debit-account">
-                    {debitEntries[rowIdx] && getAccountName(debitEntries[rowIdx].account_id)}
+                    {debitEntries[rowIdx] && getAccountName(accounts, debitEntries[rowIdx].account_id)}
                   </td>
 
                   <td className="transaction-list__cell--debit-amount">
@@ -111,7 +102,7 @@ export default function TransactionList({
                   </td>
 
                   <td className="transaction-list__cell--credit-account">
-                    {creditEntries[rowIdx] && getAccountName(creditEntries[rowIdx].account_id)}
+                    {creditEntries[rowIdx] && getAccountName(accounts, creditEntries[rowIdx].account_id)}
                   </td>
 
                   <td className="transaction-list__cell--credit-amount">
