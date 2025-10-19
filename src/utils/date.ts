@@ -30,5 +30,28 @@ export function isValidDate(dateString: string): boolean {
   }
 
   const date = new Date(dateString);
-  return !isNaN(date.getTime());
+  if (isNaN(date.getTime())) {
+    return false;
+  }
+
+  // Verify that the date was not auto-corrected (e.g., 2025-02-30 -> 2025-03-02)
+  // by checking if the formatted date matches the input
+  const [year, month, day] = dateString.split('-').map(Number);
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() + 1 === month &&
+    date.getDate() === day
+  );
+}
+
+/**
+ * Format a Date object to YYYY-MM-DD format for HTML date input
+ * @param date - Date object to format
+ * @returns Formatted date string (e.g., "2025-10-18")
+ */
+export function formatDateForInput(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
