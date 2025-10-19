@@ -19,11 +19,6 @@ export default function TransactionEntry() {
       setSuccess('');
       createTransaction(data);
       setSuccess('取引を登録しました');
-
-      // Navigate to transaction list after a short delay
-      setTimeout(() => {
-        navigate('/transactions');
-      }, 1000);
     } catch (err) {
       if (err instanceof ValidationError) {
         setError(err.message);
