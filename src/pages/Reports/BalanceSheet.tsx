@@ -2,7 +2,6 @@ import { useState, useMemo } from 'react';
 import { useAccounts, useTransactions } from '../../store/hooks';
 import { generateBalanceSheet } from '../../services/reportService';
 import { formatDateForInput } from '../../utils/date';
-import './Reports.scss';
 
 export default function BalanceSheet() {
   const { accounts } = useAccounts();
