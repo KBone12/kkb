@@ -72,7 +72,7 @@ export function formatDateWithSlash(dateString: string): string {
  */
 export function formatDateJapanese(dateString: string): string {
   const parts = dateString.split('-');
-  if (parts.length !== 3) {
+  if (parts.length !== 3 || parts.some(part => part === '')) {
     return dateString; // Return original string if format is invalid
   }
   const [year, month, day] = parts;
