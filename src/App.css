@@ -476,7 +476,6 @@
   padding: var(--spacing-lg);
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  background-color: #fafafa;
 }
 
 .transaction-list-page__filters {
