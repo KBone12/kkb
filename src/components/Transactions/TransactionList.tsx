@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Transaction, Account } from '../../types';
 
 interface TransactionListProps {
@@ -45,72 +46,80 @@ export default function TransactionList({
         <tr>
           <th className="transaction-list__header--date">日付</th>
           <th className="transaction-list__header--description">摘要</th>
-          <th className="transaction-list__header--entries">仕訳内容</th>
-          <th className="transaction-list__header--amount">金額</th>
+          <th className="transaction-list__header--debit" colSpan={2}>借方</th>
+          <th className="transaction-list__header--credit" colSpan={2}>貸方</th>
           <th className="transaction-list__header--actions">操作</th>
         </tr>
       </thead>
       <tbody>
         {sortedTransactions.map((transaction) => {
-          // Calculate total amount (use debit total)
-          const totalAmount = transaction.entries.reduce(
-            (sum, entry) => sum + entry.debit,
-            0
-          );
+          // Separate debit and credit entries
+          const debitEntries = transaction.entries.filter((entry) => entry.debit > 0);
+          const creditEntries = transaction.entries.filter((entry) => entry.credit > 0);
+          const maxRows = Math.max(debitEntries.length, creditEntries.length);
 
           return (
-            <tr key={transaction.id} className="transaction-list__row">
-              <td className="transaction-list__cell--date">
-                {formatDate(transaction.date)}
-              </td>
+            <React.Fragment key={transaction.id}>
+              {Array.from({ length: maxRows }).map((_, rowIdx) => (
+                <tr key={`${transaction.id}-${rowIdx}`} className="transaction-list__row">
+                  {rowIdx === 0 && (
+                    <>
+                      <td
+                        className="transaction-list__cell--date"
+                        rowSpan={maxRows}
+                      >
+                        {formatDate(transaction.date)}
+                      </td>
 
-              <td className="transaction-list__cell--description">
-                {transaction.description}
-              </td>
+                      <td
+                        className="transaction-list__cell--description"
+                        rowSpan={maxRows}
+                      >
+                        {transaction.description}
+                      </td>
+                    </>
+                  )}
 
-              <td className="transaction-list__cell--entries">
-                <ul className="transaction-list__entries">
-                  {transaction.entries.map((entry, idx) => (
-                    <li key={idx} className="transaction-list__entry">
-                      <span className="transaction-list__account">
-                        {getAccountName(entry.account_id)}
-                      </span>
-                      {': '}
-                      {entry.debit > 0 ? (
-                        <span className="transaction-list__debit">
-                          借方 {entry.debit.toLocaleString()}円
-                        </span>
-                      ) : (
-                        <span className="transaction-list__credit">
-                          貸方 {entry.credit.toLocaleString()}円
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </td>
+                  <td className="transaction-list__cell--debit-account">
+                    {debitEntries[rowIdx] && getAccountName(debitEntries[rowIdx].account_id)}
+                  </td>
 
-              <td className="transaction-list__cell--amount">
-                {totalAmount.toLocaleString()} 円
-              </td>
+                  <td className="transaction-list__cell--debit-amount">
+                    {debitEntries[rowIdx] && `${debitEntries[rowIdx].debit.toLocaleString()}円`}
+                  </td>
 
-              <td className="transaction-list__cell--actions">
-                <button
-                  onClick={() => onEdit(transaction)}
-                  className="transaction-list__btn transaction-list__btn--edit"
-                  aria-label={`${transaction.description}を編集`}
-                >
-                  編集
-                </button>
-                <button
-                  onClick={() => onDelete(transaction)}
-                  className="transaction-list__btn transaction-list__btn--delete"
-                  aria-label={`${transaction.description}を削除`}
-                >
-                  削除
-                </button>
-              </td>
-            </tr>
+                  <td className="transaction-list__cell--credit-account">
+                    {creditEntries[rowIdx] && getAccountName(creditEntries[rowIdx].account_id)}
+                  </td>
+
+                  <td className="transaction-list__cell--credit-amount">
+                    {creditEntries[rowIdx] && `${creditEntries[rowIdx].credit.toLocaleString()}円`}
+                  </td>
+
+                  {rowIdx === 0 && (
+                    <td
+                      className="transaction-list__cell--actions"
+                      rowSpan={maxRows}
+                    >
+                      <button
+                        onClick={() => onEdit(transaction)}
+                        className="transaction-list__btn transaction-list__btn--edit"
+                        aria-label={`${transaction.description}を編集`}
+                      >
+                        編集
+                      </button>
+                      <button
+                        onClick={() => onDelete(transaction)}
+                        className="transaction-list__btn transaction-list__btn--delete"
+                        aria-label={`${transaction.description}を削除`}
+                      >
+                        削除
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </React.Fragment>
           );
         })}
       </tbody>
