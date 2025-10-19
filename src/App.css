@@ -420,3 +420,432 @@
 .account-form__btn--submit:hover {
   background-color: var(--color-primary-dark);
 }
+
+/* Transaction List Page */
+.transaction-list-page {
+  max-width: 1400px;
+}
+
+.transaction-list-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.transaction-list-page__title {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.transaction-list-page__btn-new {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.transaction-list-page__btn-new:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.transaction-list-page__error {
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: #ffebee;
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+  border-radius: 4px;
+}
+
+.transaction-list-page__success {
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: #e8f5e9;
+  color: var(--color-success);
+  border: 1px solid var(--color-success);
+  border-radius: 4px;
+}
+
+.transaction-list-page__edit-form {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.transaction-list-page__filters {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.transaction-list-page__filter-label {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.transaction-list-page__filter-select {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 1rem;
+  color: var(--color-text);
+  background-color: white;
+  cursor: pointer;
+}
+
+.transaction-list-page__filter-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+}
+
+.transaction-list-page__stats {
+  margin-bottom: var(--spacing-md);
+  color: #666;
+}
+
+/* Transaction List Component */
+.transaction-list-wrapper {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.transaction-list__controls {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: #f8f9fa;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.transaction-list__sort-btn {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: white;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.transaction-list__sort-btn:hover {
+  background-color: var(--color-hover);
+}
+
+.transaction-list {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.transaction-list thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.transaction-list th {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.transaction-list__header--date {
+  width: 120px;
+}
+
+.transaction-list__header--description {
+  min-width: 200px;
+}
+
+.transaction-list__header--debit,
+.transaction-list__header--credit {
+  text-align: center;
+}
+
+.transaction-list__header--actions {
+  width: 200px;
+  text-align: center;
+}
+
+.transaction-list__row {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.transaction-list__row:hover {
+  background-color: var(--color-hover);
+}
+
+.transaction-list__cell--date,
+.transaction-list__cell--description {
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-text);
+}
+
+.transaction-list__cell--debit-account,
+.transaction-list__cell--credit-account {
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-text);
+}
+
+.transaction-list__cell--debit-amount,
+.transaction-list__cell--credit-amount {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: right;
+  font-family: 'Courier New', monospace;
+  color: var(--color-text);
+}
+
+.transaction-list__cell--actions {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: center;
+}
+
+.transaction-list__btn {
+  padding: 6px 12px;
+  margin: 0 2px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.transaction-list__btn--detail {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.transaction-list__btn--detail:hover {
+  background-color: #e1bee7;
+}
+
+.transaction-list__btn--edit {
+  background-color: #e3f2fd;
+  color: var(--color-primary);
+}
+
+.transaction-list__btn--edit:hover {
+  background-color: #bbdefb;
+}
+
+.transaction-list__btn--delete {
+  background-color: #ffebee;
+  color: var(--color-error);
+}
+
+.transaction-list__btn--delete:hover {
+  background-color: #ffcdd2;
+}
+
+.transaction-list--empty {
+  padding: var(--spacing-lg);
+  text-align: center;
+  color: #666;
+  background-color: #f9f9f9;
+  border: 1px dashed var(--color-border);
+  border-radius: 4px;
+}
+
+.transaction-list__empty-message {
+  margin: 0;
+}
+
+/* Transaction Detail Page */
+.transaction-detail {
+  max-width: 1000px;
+}
+
+.transaction-detail__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.transaction-detail__title {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.transaction-detail__actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.transaction-detail__btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.transaction-detail__btn--edit {
+  background-color: #e3f2fd;
+  color: var(--color-primary);
+}
+
+.transaction-detail__btn--edit:hover {
+  background-color: #bbdefb;
+}
+
+.transaction-detail__btn--delete {
+  background-color: #ffebee;
+  color: var(--color-error);
+}
+
+.transaction-detail__btn--delete:hover {
+  background-color: #ffcdd2;
+}
+
+.transaction-detail__btn--back {
+  background-color: #e0e0e0;
+  color: var(--color-text);
+}
+
+.transaction-detail__btn--back:hover {
+  background-color: #d0d0d0;
+}
+
+.transaction-detail__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.transaction-detail__info {
+  padding: var(--spacing-lg);
+  background-color: #f8f9fa;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.transaction-detail__info-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.transaction-detail__info-item:last-child {
+  margin-bottom: 0;
+}
+
+.transaction-detail__info-label {
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 80px;
+}
+
+.transaction-detail__info-value {
+  color: var(--color-text);
+}
+
+.transaction-detail__entries {
+  padding: var(--spacing-lg);
+  background-color: white;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.transaction-detail__subtitle {
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: 1.25rem;
+  color: var(--color-text);
+}
+
+.transaction-detail__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transaction-detail__table thead {
+  background-color: #f8f9fa;
+}
+
+.transaction-detail__th--account {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.transaction-detail__th--debit,
+.transaction-detail__th--credit {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: right;
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.transaction-detail__row {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.transaction-detail__row--total {
+  border-top: 2px solid var(--color-border);
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.transaction-detail__td--account,
+.transaction-detail__td--label {
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-text);
+}
+
+.transaction-detail__td--debit,
+.transaction-detail__td--credit,
+.transaction-detail__td--debit-total,
+.transaction-detail__td--credit-total {
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: right;
+  font-family: 'Courier New', monospace;
+  color: var(--color-text);
+}
+
+.transaction-detail__warning {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: #fff3e0;
+  color: var(--color-warning);
+  border: 1px solid var(--color-warning);
+  border-radius: 4px;
+}
+
+.transaction-detail__metadata {
+  padding: var(--spacing-md);
+  background-color: #fafafa;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.transaction-detail__metadata-item {
+  margin: 0.25rem 0;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.transaction-detail__error {
+  padding: var(--spacing-lg);
+  text-align: center;
+  color: var(--color-error);
+  background-color: #ffebee;
+  border: 1px solid var(--color-error);
+  border-radius: 8px;
+}

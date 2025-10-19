@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import TransactionList from './TransactionList';
 import type { Account, Transaction } from '../../types';
 
@@ -52,11 +53,15 @@ describe('TransactionList', () => {
     },
   ];
 
+  const renderWithRouter = (component: React.ReactElement) => {
+    return render(<BrowserRouter>{component}</BrowserRouter>);
+  };
+
   it('shows empty message when no transactions', () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={[]}
         accounts={mockAccounts}
@@ -72,7 +77,7 @@ describe('TransactionList', () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={mockTransactions}
         accounts={mockAccounts}
@@ -89,7 +94,7 @@ describe('TransactionList', () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={mockTransactions}
         accounts={mockAccounts}
@@ -106,7 +111,7 @@ describe('TransactionList', () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={mockTransactions}
         accounts={mockAccounts}
@@ -126,7 +131,7 @@ describe('TransactionList', () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={mockTransactions}
         accounts={mockAccounts}
@@ -144,7 +149,7 @@ describe('TransactionList', () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={mockTransactions}
         accounts={mockAccounts}
@@ -160,11 +165,37 @@ describe('TransactionList', () => {
     expect(items[1]).toHaveTextContent('コンビニで買い物');
   });
 
+  it('toggles sort order when sort button is clicked', () => {
+    const onEdit = vi.fn();
+    const onDelete = vi.fn();
+
+    renderWithRouter(
+      <TransactionList
+        transactions={mockTransactions}
+        accounts={mockAccounts}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
+    );
+
+    const sortButton = screen.getByLabelText('ソート順を切り替え');
+    expect(sortButton).toHaveTextContent('新しい順');
+
+    // Toggle to oldest first
+    fireEvent.click(sortButton);
+    expect(sortButton).toHaveTextContent('古い順');
+
+    // Verify order changed - first item should now be older transaction
+    const items = screen.getAllByText(/スーパーで買い物|コンビニで買い物/);
+    expect(items[0]).toHaveTextContent('コンビニで買い物');
+    expect(items[1]).toHaveTextContent('スーパーで買い物');
+  });
+
   it('calls onEdit when edit button is clicked', () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={mockTransactions}
         accounts={mockAccounts}
@@ -183,7 +214,7 @@ describe('TransactionList', () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={mockTransactions}
         accounts={mockAccounts}
@@ -202,7 +233,7 @@ describe('TransactionList', () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={mockTransactions}
         accounts={mockAccounts}
@@ -232,7 +263,7 @@ describe('TransactionList', () => {
       updated_at: '2025-01-20T00:00:00Z',
     };
 
-    render(
+    renderWithRouter(
       <TransactionList
         transactions={[transactionWithUnknownAccount]}
         accounts={mockAccounts}
@@ -242,5 +273,22 @@ describe('TransactionList', () => {
     );
 
     expect(screen.getByText('不明な勘定科目')).toBeInTheDocument();
+  });
+
+  it('displays detail button for each transaction', () => {
+    const onEdit = vi.fn();
+    const onDelete = vi.fn();
+
+    renderWithRouter(
+      <TransactionList
+        transactions={mockTransactions}
+        accounts={mockAccounts}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
+    );
+
+    const detailButtons = screen.getAllByLabelText(/の詳細を表示/);
+    expect(detailButtons).toHaveLength(mockTransactions.length);
   });
 });
