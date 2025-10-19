@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { getCurrentTimestamp, getCurrentDate, isValidDate, formatDateForInput } from './date';
+import {
+  getCurrentTimestamp,
+  getCurrentDate,
+  isValidDate,
+  formatDateForInput,
+  formatDateWithSlash,
+  formatDateJapanese,
+} from './date';
 
 describe('date utilities', () => {
   describe('getCurrentTimestamp', () => {
@@ -50,6 +57,36 @@ describe('date utilities', () => {
     it('handles different dates correctly', () => {
       expect(formatDateForInput(new Date('2025-12-31T00:00:00Z'))).toMatch(/2025-12-31/);
       expect(formatDateForInput(new Date('2025-01-01T00:00:00Z'))).toMatch(/2025-01-01/);
+    });
+  });
+
+  describe('formatDateWithSlash', () => {
+    it('converts YYYY-MM-DD to YYYY/MM/DD', () => {
+      expect(formatDateWithSlash('2025-01-15')).toBe('2025/01/15');
+      expect(formatDateWithSlash('2025-12-31')).toBe('2025/12/31');
+    });
+
+    it('handles all hyphens in the string', () => {
+      expect(formatDateWithSlash('2025-03-05')).toBe('2025/03/05');
+    });
+  });
+
+  describe('formatDateJapanese', () => {
+    it('converts YYYY-MM-DD to YYYY年MM月DD日', () => {
+      expect(formatDateJapanese('2025-01-15')).toBe('2025年01月15日');
+      expect(formatDateJapanese('2025-12-31')).toBe('2025年12月31日');
+    });
+
+    it('returns original string if format is invalid', () => {
+      expect(formatDateJapanese('invalid')).toBe('invalid');
+      expect(formatDateJapanese('2025/01/15')).toBe('2025/01/15');
+      expect(formatDateJapanese('2025-01')).toBe('2025-01');
+      expect(formatDateJapanese('2025-01-15-extra')).toBe('2025-01-15-extra');
+    });
+
+    it('handles edge cases gracefully', () => {
+      expect(formatDateJapanese('')).toBe('');
+      expect(formatDateJapanese('--')).toBe('--');
     });
   });
 });

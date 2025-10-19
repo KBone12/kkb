@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAccounts, useTransactions } from '../../store/hooks';
 import TransactionListComponent from '../../components/Transactions/TransactionList';
 import TransactionForm, {
@@ -10,11 +10,26 @@ import { ValidationError } from '../../store/DataStore';
 
 export default function TransactionList() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { accounts } = useAccounts();
   const { transactions, updateTransaction, deleteTransaction } = useTransactions();
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
+  const [selectedMonth, setSelectedMonth] = useState<string>('');
+
+  // Handle edit mode from navigation state
+  useEffect(() => {
+    const state = location.state as { editTransactionId?: string } | null;
+    if (state?.editTransactionId) {
+      const transaction = transactions.find((t) => t.id === state.editTransactionId);
+      if (transaction) {
+        setEditingTransaction(transaction);
+        // Clear the state to prevent re-editing on refresh
+        navigate(location.pathname, { replace: true, state: {} });
+      }
+    }
+  }, [location.state, transactions, navigate, location.pathname]);
 
   const handleEdit = (transaction: Transaction) => {
     setEditingTransaction(transaction);
@@ -64,6 +79,27 @@ export default function TransactionList() {
     navigate('/transactions/new');
   };
 
+  // Filter transactions by selected month
+  const filteredTransactions = useMemo(() => {
+    if (!selectedMonth) {
+      return transactions;
+    }
+    return transactions.filter((transaction) => {
+      return transaction.date.startsWith(selectedMonth);
+    });
+  }, [transactions, selectedMonth]);
+
+  // Get unique months from transactions for the filter dropdown
+  const availableMonths = useMemo(() => {
+    const months = new Set<string>();
+    transactions.forEach((transaction) => {
+      // Extract YYYY-MM from date
+      const month = transaction.date.substring(0, 7);
+      months.add(month);
+    });
+    return Array.from(months).sort().reverse();
+  }, [transactions]);
+
   return (
     <div className="transaction-list-page">
       <div className="transaction-list-page__header">
@@ -99,12 +135,35 @@ export default function TransactionList() {
         </div>
       )}
 
+      <div className="transaction-list-page__filters">
+        <label htmlFor="month-filter" className="transaction-list-page__filter-label">
+          期間フィルタ:
+        </label>
+        <select
+          id="month-filter"
+          value={selectedMonth}
+          onChange={(e) => setSelectedMonth(e.target.value)}
+          className="transaction-list-page__filter-select"
+        >
+          <option value="">すべて</option>
+          {availableMonths.map((month) => (
+            <option key={month} value={month}>
+              {month.replace('-', '年')}月
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="transaction-list-page__stats">
-        <p>登録済み取引: {transactions.length}件</p>
+        <p>
+          {selectedMonth
+            ? `${selectedMonth.replace('-', '年')}月の取引: ${filteredTransactions.length}件`
+            : `登録済み取引: ${filteredTransactions.length}件`}
+        </p>
       </div>
 
       <TransactionListComponent
-        transactions={transactions}
+        transactions={filteredTransactions}
         accounts={accounts}
         onEdit={handleEdit}
         onDelete={handleDelete}

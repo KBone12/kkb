@@ -55,3 +55,26 @@ export function formatDateForInput(date: Date): string {
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
+
+/**
+ * Format a date string from YYYY-MM-DD to YYYY/MM/DD
+ * @param dateString - Date string in YYYY-MM-DD format
+ * @returns Formatted date string with slashes
+ */
+export function formatDateWithSlash(dateString: string): string {
+  return dateString.replace(/-/g, '/');
+}
+
+/**
+ * Format a date string from YYYY-MM-DD to YYYY年MM月DD日
+ * @param dateString - Date string in YYYY-MM-DD format
+ * @returns Formatted Japanese date string or original string if invalid
+ */
+export function formatDateJapanese(dateString: string): string {
+  const parts = dateString.split('-');
+  if (parts.length !== 3 || parts.some(part => part === '')) {
+    return dateString; // Return original string if format is invalid
+  }
+  const [year, month, day] = parts;
+  return `${year}年${month}月${day}日`;
+}

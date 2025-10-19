@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Target Timeline:** 1-2 weeks for MVP (Phase 1)
 
-**Current Task:** Task 7 - Transaction list view
+**Current Task:** Task 8 - Reports (P&L and Balance Sheet)
 
 **Related Documents:**
 - `requirements.md` - Detailed requirements specification (in Japanese)
@@ -169,8 +169,8 @@ Data Layer → Business Logic → UI Layer → Integration
 4. ✅ Routing and layout - **COMPLETED**
 5. ✅ Account management UI - **COMPLETED**
 6. ✅ Transaction entry form - **COMPLETED**
-7. Transaction list view - **NEXT**
-8. Reports (P&L and Balance Sheet)
+7. ✅ Transaction list view - **COMPLETED**
+8. Reports (P&L and Balance Sheet) - **NEXT**
 9. File import/export
 10. Error handling and loading states
 11. Testing and debugging
@@ -435,5 +435,18 @@ If you're starting work on this project:
   - Enhanced date utilities (formatDateForInput, improved validation)
   - 24 new tests added (111 total)
 
+- ✅ Task 7: Transaction list view (PR #20)
+  - Month filter for transactions (dropdown with available months)
+  - Sort order toggle (newest/oldest) with visual indicator
+  - Transaction detail page with full entry display
+  - Navigation from list to detail view
+  - Edit navigation from detail to list with auto-open form
+  - Comprehensive styling for list and detail pages
+  - BEM-compliant CSS with proper color contrast
+  - Utility functions extracted (getAccountName, formatDateWithSlash, formatDateJapanese)
+  - Locale specification for all number formatting (ja-JP)
+  - Date parsing vulnerability fixed
+  - 32 new tests added (143 total)
+
 **Next:**
-- Task 7: Transaction list view (already partially implemented, may need enhancements)
+- Task 8: Reports (P&L and Balance Sheet)
