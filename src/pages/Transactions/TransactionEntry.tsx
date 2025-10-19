@@ -22,7 +22,7 @@ export default function TransactionEntry() {
 
       // Navigate to transaction list after a short delay
       setTimeout(() => {
-        navigate('/transactions/list');
+        navigate('/transactions');
       }, 1000);
     } catch (err) {
       if (err instanceof ValidationError) {
@@ -34,7 +34,7 @@ export default function TransactionEntry() {
   };
 
   const handleCancel = () => {
-    navigate('/transactions/list');
+    navigate('/transactions');
   };
 
   return (

@@ -61,7 +61,7 @@ export default function TransactionList() {
   };
 
   const handleNewTransaction = () => {
-    navigate('/transactions/entry');
+    navigate('/transactions/new');
   };
 
   return (
