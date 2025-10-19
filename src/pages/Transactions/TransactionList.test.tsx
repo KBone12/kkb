@@ -1,9 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import TransactionList from './TransactionList';
 import { AppProvider } from '../../store/AppContext';
 import type { Account, Transaction } from '../../types';
+
+// Mock useLocation
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useLocation: vi.fn(),
+  };
+});
 
 describe('TransactionList Page', () => {
   const mockAccounts: Account[] = [
@@ -64,6 +73,15 @@ describe('TransactionList Page', () => {
       lastModified: new Date().toISOString(),
     };
     localStorage.setItem('kkb-data', JSON.stringify(initialData));
+
+    // Mock useLocation to return default location
+    (useLocation as ReturnType<typeof vi.fn>).mockReturnValue({
+      pathname: '/transactions',
+      search: '',
+      hash: '',
+      state: null,
+      key: 'default',
+    });
   });
 
   const renderWithProviders = () => {
@@ -218,6 +236,24 @@ describe('TransactionList Page', () => {
       expect(options).toContain('');  // "すべて" option
       expect(options).toContain('2025-01');
       expect(options).toContain('2025-02');
+    });
+  });
+
+  it('opens edit form when navigated with editTransactionId state', async () => {
+    // Mock location with edit state
+    (useLocation as ReturnType<typeof vi.fn>).mockReturnValue({
+      pathname: '/transactions',
+      search: '',
+      hash: '',
+      state: { editTransactionId: 'txn1' },
+      key: 'edit-state',
+    });
+
+    renderWithProviders();
+
+    await waitFor(() => {
+      // Check if edit form is shown
+      expect(screen.getByLabelText(/摘要/)).toBeInTheDocument();
     });
   });
 });

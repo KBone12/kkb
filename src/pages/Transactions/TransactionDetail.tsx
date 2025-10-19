@@ -18,7 +18,8 @@ export default function TransactionDetail() {
   }, [id, transactions]);
 
   const handleEdit = () => {
-    navigate('/transactions');
+    if (!transaction) return;
+    navigate('/transactions', { state: { editTransactionId: transaction.id } });
   };
 
   const handleDelete = () => {

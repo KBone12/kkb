@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAccounts, useTransactions } from '../../store/hooks';
 import TransactionListComponent from '../../components/Transactions/TransactionList';
 import TransactionForm, {
@@ -10,12 +10,26 @@ import { ValidationError } from '../../store/DataStore';
 
 export default function TransactionList() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { accounts } = useAccounts();
   const { transactions, updateTransaction, deleteTransaction } = useTransactions();
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
   const [selectedMonth, setSelectedMonth] = useState<string>('');
+
+  // Handle edit mode from navigation state
+  useEffect(() => {
+    const state = location.state as { editTransactionId?: string } | null;
+    if (state?.editTransactionId) {
+      const transaction = transactions.find((t) => t.id === state.editTransactionId);
+      if (transaction) {
+        setEditingTransaction(transaction);
+        // Clear the state to prevent re-editing on refresh
+        navigate(location.pathname, { replace: true, state: {} });
+      }
+    }
+  }, [location.state, transactions, navigate, location.pathname]);
 
   const handleEdit = (transaction: Transaction) => {
     setEditingTransaction(transaction);

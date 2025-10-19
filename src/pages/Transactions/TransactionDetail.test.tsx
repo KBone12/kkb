@@ -118,6 +118,19 @@ describe('TransactionDetail', () => {
     expect(editButton).toBeInTheDocument();
   });
 
+  it('navigates to transactions list with edit state when edit button is clicked', async () => {
+    renderWithProviders('txn1');
+
+    await screen.findByText('取引詳細');
+
+    const editButton = screen.getByText('編集');
+    fireEvent.click(editButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith('/transactions', {
+      state: { editTransactionId: 'txn1' },
+    });
+  });
+
   it('shows delete button', async () => {
     renderWithProviders('txn1');
 
